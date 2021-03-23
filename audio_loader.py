@@ -5,6 +5,7 @@ import numpy as np
 
 #I add in audios all the audiopaths and in labels the corresponding label to each audio file
 #Now this is temporary to try algorithms on emovo
+
 audios = []
 labels = []
 #specify the appropriate path to find the files
@@ -25,6 +26,7 @@ for filepath in glob.iglob('/Users/giorgiolabate/Desktop/Polimi/COMPUTER SCIENCE
     elif "Surprise" in filepath:
         labels.append("Surprise")
 
+labels = np.array(labels)
 
 #Given the list of audio files' paths, it returns the matrix containing all the audios and the related features
 #of shape n_audios x n_features
@@ -45,4 +47,4 @@ def process_audio_files(audios):  # audios is the list of the audio files' paths
     return np.array(processed_audios)
 
 #Just a check
-print(process_audio_files(audios))
+#print(process_audio_files(audios))
