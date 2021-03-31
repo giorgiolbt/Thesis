@@ -2,16 +2,17 @@ import numpy as np
 from hmmlearn import hmm
 import corpus_loader
 
-corpus = corpus_loader.corpus
 emotions = corpus_loader.emotions
-train_set = corpus_loader.train_set
-test_set = corpus_loader.test_set
+
+#Loads the corpus and build the training and test data
+corpus = corpus_loader.load_corpus(False)
+train_set, test_set = corpus_loader.build_train_test(corpus, emotions)
 
 #Models saved as a dictionary where the keys are the emotions and the value the corresponding classifier
 gmms = {}
 
 
-#I train the 7 HMM with only one state (GMM) on the train sets produced by the 'corpus_loader'
+#Trains the 7 HMM with only one state (GMM) on the train sets produced by the 'corpus_loader'
 def train_gmms():
     for em in emotions:
         print("training for emotion:", em)
