@@ -17,6 +17,7 @@ def train_gmms():
         print("training for emotion:", em)
         gmms[em] = hmm.GMMHMM(n_components=1, n_mix=1)
         gmms[em].fit(train_set[em])
+        print(hmms[em].monitor_.converged)
 
 
 train_gmms()
