@@ -1,11 +1,13 @@
 import numpy as np
 from hmmlearn import hmm
 import corpus_loader
+from sklearn.model_selection import GridSearchCV
+
 
 emotions = corpus_loader.emotions
 
 #Loads the corpus and build the training and test data
-corpus = corpus_loader.load_corpus(False)
+corpus = corpus_loader.load_corpus(True)
 train_set, test_set = corpus_loader.build_train_test(corpus, emotions)
 
 #Models saved as a dictionary where the keys are the emotions and the value the corresponding classifier
@@ -21,7 +23,7 @@ def train_gmms():
         print(gmms[em].monitor_.converged)
 
 
-train_gmms()
+#train_gmms()
 
 
 def test_gmms():
@@ -57,7 +59,17 @@ def test_gmms():
     print("\nThe accuracy of the classifier is: ", (correct / total) * 100)
 
 
-test_gmms()
+#test_gmms()
 
+def hyper_parameter_tuning(param_grid, emotions):
+    for em in emotions:
+        gmms[em] = hmm.GMMHMM()
+        grid = GridSearchCV(gmms[em], param_grid, n_jobs = -1, verbose = 5)
+        grid.fit(np.array(train_set[em]))
+        print(grid.best_params_)
+
+
+param_grid = {'n_components': [1], 'n_mix':[1,2,3]}
+hyper_parameter_tuning(param_grid, emotions)
 
 
