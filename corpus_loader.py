@@ -6,8 +6,9 @@ from sklearn import preprocessing
 
 
 #Assigns the analyzed_audios to the variable
-prescaled_data = (audio_loader.process_audio_files(audio_loader.audios)).astype(np.float64)
-labels = audio_loader.labels
+#TODO: control if the rounding of the floats is ok
+prescaled_data = (np.genfromtxt('/Users/giorgiolabate/PycharmProjects/Thesis/analyzed_audios.csv', delimiter = ',')).astype(np.float64)
+labels = np.genfromtxt('/Users/giorgiolabate/PycharmProjects/Thesis/labels.csv', delimiter = ',', dtype= str)
 #These are the possible categories of emotions
 emotions = ['Anger', 'Disgust', 'Fear', 'Joy', 'Neutrality', 'Sadness', 'Surprise']
 

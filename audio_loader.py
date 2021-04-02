@@ -48,3 +48,5 @@ def process_audio_files(audios):  # audios is the list of the audio files' paths
 
 #Just a check
 #print(process_audio_files(audios))
+np.savetxt('/Users/giorgiolabate/PycharmProjects/Thesis/analyzed_audios.csv', process_audio_files(audios), delimiter = ',')
+np.savetxt('/Users/giorgiolabate/PycharmProjects/Thesis/labels.csv', labels, delimiter = ',', fmt='%s')
