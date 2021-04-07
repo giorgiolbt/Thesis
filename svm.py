@@ -20,13 +20,14 @@ def fit_n_splits(number_of_splits, data, labels, test_percentage, number_of_clas
         # Shuffling of the data -> TO BE REMOVED, it's done by the 'train_test_split' function
         # shuffled_data, shuffled_labels = shuffle(standardized_data, labels)
 
-        # Splits the data and the labels in training and test sets
-        X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size = test_percentage, random_state=i)
+        # Splits the data and the labels in training and test sets.
+        # To split the dataset into train and test sets in a way that preserves the same proportions of examples in each class as observed in the original dataset we use the 'stratify' parameter
+        X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size = test_percentage, random_state=i, stratify = labels)
 
         # In the Grid Search, all the mixtures of hyperparameters combinations will pass through one by one into the model and check each model's score.
         # It gives us a set of hyperparameters that gives the best score. Scikit-learn package as a means of automatically iterating
         # over these hyperparameters using cross-validation. This method is called Grid Search.
-        param_grid = {'C': [0.1, 1, 100, 1000], 'kernel': ['rbf', 'poly', 'sigmoid', 'linear'],
+        param_grid = {'C': [0.1, 1, 10, 100, 1000], 'kernel': ['rbf', 'poly', 'sigmoid', 'linear'],
                       'degree': [1, 2, 3, 4, 5, 6], 'gamma': [1, 0.1, 0.01, 0.001, 0.0001]}
         grid = GridSearchCV(SVC(), param_grid, n_jobs=-1, scoring='accuracy')
         grid.fit(X_train, y_train)
@@ -61,6 +62,15 @@ processed__audios = (audio_loader.process_audio_files(audio_loader.audios)).asty
 
 # Preprocessing of the data: mean = 0 and std = 1
 standardized_data = preprocessing.scale(processed__audios)
+
+#TODO: Do not use scale unless you know what you are doing. A common mistake is to apply it to the entire
+# data before splitting into training and test sets. This will bias the model evaluation because information
+# would have leaked from the test set to the training set. In general, we recommend using StandardScaler
+# within a Pipeline in order to prevent most risks of data leaking: pipe = make_pipeline(StandardScaler(), LogisticRegression()).
+# Ho provato a fare scale dopo lo split, ma non mi sembra sia cambiato quasi nulla -> da controllare
+
+#TODO: It is often advised to balance the training data before starting SVM classifier -> I think I did it with 'stratify'
+
 
 
 fit_n_splits(5, standardized_data, labels, 0.15, 7)
