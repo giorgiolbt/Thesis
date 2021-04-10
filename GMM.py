@@ -18,12 +18,12 @@ gmms = {}
 def train_gmms():
     for em in emotions:
         print("training for emotion:", em)
-        gmms[em] = hmm.GMMHMM(n_components=1, n_mix=1)
+        gmms[em] = hmm.GMMHMM(n_components=1, n_mix=3)
         gmms[em].fit(train_set[em])
         print(gmms[em].monitor_.converged)
 
 
-#train_gmms()
+train_gmms()
 
 
 def test_gmms():
@@ -31,7 +31,7 @@ def test_gmms():
     correct = 0
     #analyzes the emotions one at a time
     for em in emotions:
-        print("ANALYZED EMOTION: " + em + "\n")
+        #print("ANALYZED EMOTION: " + em + "\n")
         total_specific_em = 0
         correct_specific_em = 0
         correct_label = em
@@ -47,8 +47,8 @@ def test_gmms():
                 if (score > best_res):
                     best_res = score
                     predicted_emotion = gmm
-            print("The CORRECT label for this sample was: ", correct_label)
-            print("The PREDICTED label for this sample is: ", predicted_emotion)
+            #print("The CORRECT label for this sample was: ", correct_label)
+            #print("The PREDICTED label for this sample is: ", predicted_emotion)
             if (predicted_emotion == correct_label):
                 correct += 1
                 correct_specific_em += 1
@@ -56,10 +56,10 @@ def test_gmms():
             total_specific_em += 1
         print("\nThe accuracy of the classifier for the emotion " + em + " is:",
               (correct_specific_em / total_specific_em) * 100)
-    print("\nThe accuracy of the classifier is: ", (correct / total) * 100)
+    print("\nThe micro accuracy of the classifier is: ", (correct / total) * 100)
 
 
-#test_gmms()
+test_gmms()
 
 def hyper_parameter_tuning(param_grid, emotions):
     for em in emotions:
@@ -70,6 +70,6 @@ def hyper_parameter_tuning(param_grid, emotions):
 
 
 param_grid = {'n_components': [1], 'n_mix':[1,2,3]}
-hyper_parameter_tuning(param_grid, emotions)
+#hyper_parameter_tuning(param_grid, emotions)
 
 

@@ -29,13 +29,19 @@ for filepath in glob.iglob('/Users/giorgiolabate/Desktop/Polimi/COMPUTER SCIENCE
 labels = np.array(labels)
 
 #Given the list of audio files' paths, it returns the matrix containing all the audios and the related features
-#of shape n_audios x n_features
-def process_audio_files(audios):  # audios is the list of the audio files' paths
+#of shape n_audios x n_features. 'extended' is a boolean indicates if the extended (88) set of features must be used
+def process_audio_files(audios, extended):  # audios is the list of the audio files' paths
     processed_audios = []
-    smile = opensmile.Smile(
-        feature_set=opensmile.FeatureSet.GeMAPSv01b,
-        feature_level=opensmile.FeatureLevel.Functionals,
-    )
+    if(extended):
+        smile = opensmile.Smile(
+            feature_set=opensmile.FeatureSet.eGeMAPSv01b,
+            feature_level=opensmile.FeatureLevel.Functionals,
+        )
+    else:
+        smile = opensmile.Smile(
+            feature_set=opensmile.FeatureSet.GeMAPSv01b,
+            feature_level=opensmile.FeatureLevel.Functionals,
+        )
     for audio in audios:
         signal, sampling_rate = audiofile.read(audio, always_2d=True)
         result = smile.process_signal(
@@ -48,5 +54,5 @@ def process_audio_files(audios):  # audios is the list of the audio files' paths
 
 #Just a check
 #print(process_audio_files(audios))
-np.savetxt('/Users/giorgiolabate/PycharmProjects/Thesis/analyzed_audios.csv', process_audio_files(audios), delimiter = ',')
+np.savetxt('/Users/giorgiolabate/PycharmProjects/Thesis/analyzed_audios.csv', process_audio_files(audios, True), delimiter = ',')
 np.savetxt('/Users/giorgiolabate/PycharmProjects/Thesis/labels.csv', labels, delimiter = ',', fmt='%s')

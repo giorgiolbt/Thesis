@@ -57,7 +57,9 @@ def fit_n_splits(number_of_splits, data, labels, test_percentage, number_of_clas
 labels = audio_loader.labels
 #print(labels)
 
-processed__audios = (audio_loader.process_audio_files(audio_loader.audios)).astype(np.float64)
+#TODO: verifica che trasformali in float 64 non influenzi. Sembra avere poca rilevanza. Ottengo risultati leggermente
+#migliori senza passare a float 64, ma così ho warning
+processed__audios = (audio_loader.process_audio_files(audio_loader.audios)).astype(np.float32)
 #print(processed__audios)
 
 # Preprocessing of the data: mean = 0 and std = 1
