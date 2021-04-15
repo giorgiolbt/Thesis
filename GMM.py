@@ -2,6 +2,7 @@ import numpy as np
 from hmmlearn import hmm
 import corpus_loader
 from sklearn.model_selection import GridSearchCV
+from numpy import array
 
 
 emotions = corpus_loader.emotions
@@ -20,13 +21,15 @@ def train_gmms():
         print("training for emotion:", em)
         gmms[em] = hmm.GMMHMM(n_components=1, n_mix=3)
         gmms[em].fit(train_set[em])
-        print(gmms[em].monitor_.converged)
+        print("Is the GMM training converged? " + str(gmms[em].monitor_.converged))
 
 
 train_gmms()
 
 
 def test_gmms():
+    # Dictionary that will contain the accuracy of each classifier
+    accuracies = {}
     total = 0
     correct = 0
     #analyzes the emotions one at a time
@@ -37,7 +40,7 @@ def test_gmms():
         correct_label = em
         #analyzes each sample in the test set of the emotion analyzed
         for test_sample in test_set[em]:
-            best_res = -1
+            best_res = -float('inf')
             predicted_emotion = None
             #calculates the likelihood (of a sample being produced by a HMM) produced by each one of the 7 classifiers
             for gmm in emotions:
@@ -54,9 +57,11 @@ def test_gmms():
                 correct_specific_em += 1
             total += 1
             total_specific_em += 1
-        print("\nThe accuracy of the classifier for the emotion " + em + " is:",
+        print("The accuracy of the classifier for the emotion " + em + " is:",
               (correct_specific_em / total_specific_em) * 100)
+        accuracies[em] = (correct_specific_em/total_specific_em)*100
     print("\nThe micro accuracy of the classifier is: ", (correct / total) * 100)
+    print("The macro accuracy of the classifier is: ", array([accuracies[em] for em in accuracies]).mean())
 
 
 test_gmms()

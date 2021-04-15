@@ -30,7 +30,7 @@ labels = np.array(labels)
 
 #Given the list of audio files' paths, it returns the matrix containing all the audios and the related features
 #of shape n_audios x n_features. 'extended' is a boolean indicates if the extended (88) set of features must be used
-def process_audio_files(audios, extended):  # audios is the list of the audio files' paths
+def process_audio_files(audios, extended = False, pandas = False):  # audios is the list of the audio files' paths
     processed_audios = []
     if(extended):
         smile = opensmile.Smile(
@@ -48,11 +48,18 @@ def process_audio_files(audios, extended):  # audios is the list of the audio fi
             signal,
             sampling_rate
         )
-        processed_audios.append(result.values[0])
+        if(pandas):
+            processed_audios.append(result)
+        else:
+            processed_audios.append(result.values[0])
 
-    return np.array(processed_audios)
+    if(pandas):
+        return processed_audios
+    else:
+        return np.array(processed_audios)
+
 
 #Just a check
 #print(process_audio_files(audios))
-np.savetxt('/Users/giorgiolabate/PycharmProjects/Thesis/analyzed_audios.csv', process_audio_files(audios, True), delimiter = ',')
-np.savetxt('/Users/giorgiolabate/PycharmProjects/Thesis/labels.csv', labels, delimiter = ',', fmt='%s')
+#np.savetxt('/Users/giorgiolabate/PycharmProjects/Thesis/analyzed_audios.csv', process_audio_files(audios, True, False), delimiter = ',')
+#np.savetxt('/Users/giorgiolabate/PycharmProjects/Thesis/labels.csv', labels, delimiter = ',', fmt='%s')

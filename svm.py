@@ -59,7 +59,7 @@ labels = audio_loader.labels
 
 #TODO: verifica che trasformali in float 64 non influenzi. Sembra avere poca rilevanza. Ottengo risultati leggermente
 #migliori senza passare a float 64, ma così ho warning
-processed__audios = (audio_loader.process_audio_files(audio_loader.audios)).astype(np.float32)
+processed__audios = (audio_loader.process_audio_files(audio_loader.audios, True)).astype(np.float32)
 #print(processed__audios)
 
 # Preprocessing of the data: mean = 0 and std = 1
@@ -69,7 +69,7 @@ standardized_data = preprocessing.scale(processed__audios)
 # data before splitting into training and test sets. This will bias the model evaluation because information
 # would have leaked from the test set to the training set. In general, we recommend using StandardScaler
 # within a Pipeline in order to prevent most risks of data leaking: pipe = make_pipeline(StandardScaler(), LogisticRegression()).
-# Ho provato a fare scale dopo lo split, ma non mi sembra sia cambiato quasi nulla -> da controllare
+# Ho provato a fare scale dopo lo split, ma non mi sembra sia cambiato quasi nulla -> da controllare. Metti tutto nella tesi poi  (anche questo fare scaling prima e dopo)
 
 #TODO: It is often advised to balance the training data before starting SVM classifier -> I think I did it with 'stratify'
 
