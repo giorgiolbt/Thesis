@@ -1,7 +1,7 @@
 import audio_loader
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn import preprocessing
+from sklearn.preprocessing import MinMaxScaler
 
 
 
@@ -23,8 +23,11 @@ def load_corpus(standardize):
 
     if(standardize):
         # Preprocessing of the data --> wrong: it must be done once I've done the split in training and test. Actually I don't know: because sometimes it says that it's better to do like this
-        standardized_data = preprocessing.scale(prescaled_data)
+       # standardized_data = preprocessing.scale(prescaled_data)
 
+        scaler = MinMaxScaler()
+        scaler.fit(prescaled_data)
+        standardized_data = scaler.transform(prescaled_data)
         #standardized_data.std(axis=0)
 
         #this loop populates the corpus
@@ -74,7 +77,7 @@ def build_train_test(corpus, emotions):
     test_set = {}
     #Here the training and test sets are built.
     for em in emotions:
-        train_set[em], test_set[em] = train_test_split(corpus[em], test_size=0.15, random_state=42)
+        train_set[em], test_set[em] = train_test_split(corpus[em], test_size = 0.15, random_state=4)
     return train_set, test_set
 #print(train_set['Anger'])
 

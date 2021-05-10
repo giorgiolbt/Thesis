@@ -61,5 +61,5 @@ def process_audio_files(audios, extended = False, pandas = False):  # audios is 
 
 #Just a check
 #print(process_audio_files(audios))
-#np.savetxt('/Users/giorgiolabate/PycharmProjects/Thesis/analyzed_audios.csv', process_audio_files(audios, True, False), delimiter = ',')
+#np.savetxt('/Users/giorgiolabate/PycharmProjects/Thesis/analyzed_audios.csv', process_audio_files(audios, False, False), delimiter = ',')
 #np.savetxt('/Users/giorgiolabate/PycharmProjects/Thesis/labels.csv', labels, delimiter = ',', fmt='%s')
